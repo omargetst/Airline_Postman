@@ -1,0 +1,299 @@
+{
+	"info": {
+		"_postman_id": "aeef8a30-8647-4264-8075-63f2bddf1551",
+		"name": "airline flights",
+		"description": "Coleccion para la aoo de airline-docker para este repositorio en git:\n\nhttps://github.com/jomarnavarro/airline-docker\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Flight",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d0165b77-5ff8-4d42-a661-0b17fd34dd82",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b54a7155-c03b-49a0-96b4-e4c3569cfff4",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"var duration = pm.variables.get(\"duration\");",
+							"var destination = pm.variables.get(\"destination\");",
+							"var origin = pm.variables.get(\"origin\");",
+							"var flight = jsonData.flight_id;",
+							"",
+							"",
+							"pm.environment.set(\"flight_id\", flight);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The destination is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.destination).to.eql(destination);",
+							"});",
+							"",
+							"pm.test(\"The duration is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.duration).to.eql(duration);",
+							"});",
+							"",
+							"pm.test(\"The origin is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.origin).to.eql(origin);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"origin\": \"{{origin}}\",\r\n        \"destination\": \"{{destination}}\",\r\n        \"duration\": \"{{duration}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/flight/new",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"flight",
+						"new"
+					]
+				},
+				"description": "Crea un nuevo vuelo"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Flight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cfe84f1d-2dfe-4d1b-9e00-b9a48662dd16",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"var duration = pm.variables.get(\"duration\");",
+							"var destination = pm.variables.get(\"destination\");",
+							"var origin = pm.variables.get(\"origin\");",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The destination is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.destination).to.eql(destination);",
+							"});",
+							"",
+							"pm.test(\"The duration is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.duration).to.eql(parseInt(duration));",
+							"});",
+							"",
+							"pm.test(\"The origin is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.origin).to.eql(origin);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/flights/{{flight_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"flights",
+						"{{flight_id}}"
+					]
+				},
+				"description": "Crea un nuevo vuelo"
+			},
+			"response": []
+		},
+		{
+			"name": "New Reservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dc4ad40d-87f2-477e-bb73-44e87d89baac",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var jsonData = pm.response.json();",
+							"var name = pm.variables.get(\"name\");",
+							"var destination = pm.variables.get(\"destination\");",
+							"var origin = pm.variables.get(\"origin\");",
+							"var reservation = jsonData.reservation_id;",
+							"",
+							"",
+							"pm.environment.set(\"reservation_id\", reservation);",
+							"",
+							"pm.test(\"The passenger name is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(name);",
+							"});",
+							"",
+							"pm.test(\"The destination is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.destination).to.eql(destination);",
+							"});",
+							"",
+							"pm.test(\"The origin is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.origin).to.eql(origin);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"flight_id\":\"{{flight_id}}\",\n\t\"name\":\"{{name}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/reservation/new",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"reservation",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Reservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a526c4c6-af38-47a5-92fa-f5c847caf3c9",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/reservations/{{reservation_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"reservations",
+						"{{reservation_id}}"
+					]
+				},
+				"description": "Obtiene los datos de reservación de un ID en específico."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
